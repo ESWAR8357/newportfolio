@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Operations - Eswar Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .result {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+        
+        .result h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .result p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .change-option {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f4fd;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .change-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Back to Portfolio</a>
+    
+    <div class="container">
+        <h1>Number Operations</h1>
+        
+        <div class="input-group">
+            <label for="operation">Choose Operation:</label>
+            <select id="operation">
+                <option value="">Select an operation</option>
+                <option value="prime">Prime Numbers</option>
+                <option value="fibonacci">Fibonacci Numbers</option>
+                <option value="armstrong">Armstrong Number Check</option>
+                <option value="palindrome">Palindrome Number Check</option>
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <label for="number">Enter Number:</label>
+            <input type="number" id="number" placeholder="Enter a number" min="1">
+        </div>
+        
+        <button class="btn" onclick="calculateResult()">Get Result</button>
+        
+        <div id="result" class="result">
+            <h3 id="resultTitle"></h3>
+            <p id="resultText"></p>
+        </div>
+        
+        <div id="changeOption" class="change-option">
+            <p>Do you want to change option?</p>
+            <button class="change-btn" onclick="resetForm()">Yes, Change Option</button>
+        </div>
+    </div>
+
+    <script>
+        function calculateResult() {
+            const operation = document.getElementById('operation').value;
+            const number = parseInt(document.getElementById('number').value);
+            const resultDiv = document.getElementById('result');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultText = document.getElementById('resultText');
+            const changeOption = document.getElementById('changeOption');
+            
+            if (!operation) {
+                alert('Please select an operation');
+                return;
+            }
+            
+            if (!number || number < 1) {
+                alert('Please enter a valid positive number');
+                return;
+            }
+            
+            let title = '';
+            let text = '';
+            
+            switch(operation) {
+                case 'prime':
+                    const primes = generatePrimes(number);
+                    title = `Prime Numbers up to ${number}`;
+                    text = primes.length > 0 ? `Found ${primes.length} prime numbers: ${primes.join(', ')}` : 'No prime numbers found in this range.';
+                    break;
+                    
+                case 'fibonacci':
+                    const fibs = generateFibonacci(number);
+                    title = `Fibonacci Numbers up to ${number}`;
+                    text = `Fibonacci sequence: ${fibs.join(', ')}`;
+                    break;
+                    
+                case 'armstrong':
+                    const isArmstrong = checkArmstrong(number);
+                    title = `Armstrong Number Check for ${number}`;
+                    text = isArmstrong ? `${number} is an Armstrong number!` : `${number} is not an Armstrong number.`;
+                    break;
+                    
+                case 'palindrome':
+                    const isPalindrome = checkPalindrome(number);
+                    title = `Palindrome Check for ${number}`;
+                    text = isPalindrome ? `${number} is a palindrome number!` : `${number} is not a palindrome number.`;
+                    break;
+            }
+            
+            resultTitle.textContent = title;
+            resultText.textContent = text;
+            resultDiv.style.display = 'block';
+            changeOption.style.display = 'block';
+        }
+        
+        function generatePrimes(limit) {
+            const primes = [];
+            for (let i = 2; i <= limit; i++) {
+                if (isPrime(i)) {
+                    primes.push(i);
+                }
+            }
+            return primes;
+        }
+        
+        function isPrime(num) {
+            if (num < 2) return false;
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false;
+            }
+            return true;
+        }
+        
+        function generateFibonacci(limit) {
+            const fibs = [];
+            let a = 0, b = 1;
+            
+            while (a <= limit) {
+                fibs.push(a);
+                [a, b] = [b, a + b];
+            }
+            
+            return fibs;
+        }
+        
+        function checkArmstrong(num) {
+            const digits = num.toString().split('').map(Number);
+            const power = digits.length;
+            const sum = digits.reduce((acc, digit) => acc + Math.pow(digit, power), 0);
+            return sum === num;
+        }
+        
+        function checkPalindrome(num) {
+            const str = num.toString();
+            return str === str.split('').reverse().join('');
+        }
+        
+        function resetForm() {
+            document.getElementById('operation').value = '';
+            document.getElementById('number').value = '';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('changeOption').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
